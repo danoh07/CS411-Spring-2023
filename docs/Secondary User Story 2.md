@@ -1,0 +1,1 @@
+### As a regular user, I want to be able to see the progress of my playlist conversion, so that I can estimate how much time it will take to complete.

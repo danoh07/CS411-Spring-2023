@@ -1,1 +1,0 @@
-As a logged-in user, I want to be able to share my converted playlists with other users, so that they can use them too.

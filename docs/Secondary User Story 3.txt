@@ -1,1 +1,0 @@
-As a logged-in user, I want to be able to see my account settings, so that I can update my personal information and preferences.

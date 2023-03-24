@@ -1,0 +1,1 @@
+### As a regular user, I want to be able to switch to dark mode, so that I can use the app in low-light conditions without straining my eyes.

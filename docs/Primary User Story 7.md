@@ -1,0 +1,1 @@
+As a logged-in user, I should be able to re-upload a pre-existing playlist and only update it with songs that aren't duplicates. This will allow an easy method to update playlists that are already saved to my account, and allow myself to add new songs without having to re-convert every song in a playlist that has already been converted.

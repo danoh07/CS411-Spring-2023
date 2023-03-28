@@ -1,0 +1,3 @@
+###  As a logged-in user, I want to be able to save my converted playlists to my account so that I can access them later. The platform should use OAuth to authenticate me and allow me to securely access my account. Once authenticated, the platform should provide a "save" option that allows me to save my converted playlist to my account. The saved playlist should be associated with my account and accessible only to me.
+
+### When I want to access my saved playlists, I can navigate to the "My Playlists" section of my account. The platform should display all my saved playlists in a user-friendly manner, allowing me to preview, edit, or delete them if necessary. I should also be able to easily export a variety of formats, depending on my needs.

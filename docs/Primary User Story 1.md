@@ -1,1 +1,0 @@
-### As a regular user, I want to be able to search for a playlist on a music platform, so that I can find the one I want to convert.As a regular user, I want to be able to search for a playlist on a music platform, so that I can find the one I want to convert

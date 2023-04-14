@@ -20,7 +20,7 @@ function App() {
     // Get retuest with Arist Id grab all the albums from the artist
     await fetch('/search_playlist_by_artist/' + searchInput)
       .then(response => response.json())
-      .then(data => setAlbums(data.body.items))
+      .then(data => setAlbums(data.items))
   }
 
   

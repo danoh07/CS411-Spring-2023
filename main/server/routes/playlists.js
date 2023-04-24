@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+
 const {
     getPlaylists,
     getPlaylist,
@@ -7,8 +8,10 @@ const {
     updatePlaylist
     } = require('../controllers/playlistController')
 
+const requireAuth = require('../middleware/requireAuth');
 const router = express.Router()
 
+router.use(requireAuth)
 // GET all playlist
 router.get('/', getPlaylists)
 

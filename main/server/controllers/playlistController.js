@@ -2,7 +2,9 @@ const Playlist = require('../models/playlistModel')
 const mongoose = require('mongoose')
 // get all playlists
 const getPlaylists = async (req, res) => {
-    const playlists = await Playlist.find({}).sort({createdAt: -1})
+    const user_id = req.user._id
+
+    const playlists = await Playlist.find({ user_id }).sort({createdAt: -1})
     res.status(200).json(playlists)
 }
 // get a single playlist
@@ -25,10 +27,24 @@ const getPlaylist = async (req, res) => {
 // create a new playlist
 const createPlaylist = async(req, res) => {
     const {title, songs, load} = req.body
+
+    let emptyFields = []
+
+    if(!title) {
+        emptyFields.push('title')
+    }
+    if(!songs) {
+        emptyFields.push('songs')
+    }
+    if(emptyFields.length > 0) {
+        res.status(400).json({ error: 'Please fill all the fields', emptyFields})
+    }
+
     
     // add doc to db
     try {
-        const playlist = await Playlist.create({title, songs, load})
+        const user_id = req.user._id
+        const playlist = await Playlist.create({title, songs, load, user_id})
         res.status(200).json(playlist)
     } catch (error) {
         res.status(400).json(error)

@@ -31,7 +31,6 @@ export const AuthContextProvider = ({ children }) => {
         }})
   
       const json = await response.json()
-      console.log(json)
   
       if (response.ok) {
         // save the user to local storage

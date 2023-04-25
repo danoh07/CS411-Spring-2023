@@ -14,7 +14,7 @@ router.post('/signup', signupUser)
 // Auth Google
 router.get("/auth/google/login/success", googleLoginUser);
   
-router.get('/auth/google', passport.authenticate('google', { scope:[ 'email', 'profile' ] }))
+router.get('/auth/google', passport.authenticate('google', { scope:[ 'email', 'profile', 'https://www.googleapis.com/auth/youtube', 'https://www.googleapis.com/auth/youtube.readonly'] }))
 
 router.get('/auth/google/callback',
     passport.authenticate( 'google', {
@@ -28,6 +28,7 @@ router.get("/auth/login/failed", (req, res) => {
 
 router.get("/auth/google/logout", async(req, res) => {
     req.logout();
+    // todo clear / unset access token from the database 
     res.redirect('http://localhost:3000/login');
 });
 

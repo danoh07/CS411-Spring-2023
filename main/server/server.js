@@ -3,6 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const playlistRoutes = require('./routes/playlists');
 const userRoutes = require('./routes/user');
+const spotifyRoutes = require('./routes/spotify');
+const youtubeRoutes = require('./routes/youtube');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 require('./config/passport');
@@ -27,7 +29,8 @@ app.use(cookieSession({
 
 // routes
 app.use('/api/playlists', playlistRoutes)
-
+app.use('/api/spotify', spotifyRoutes)
+app.use('/api/youtube', youtubeRoutes)
 
 app.use(passport.initialize())
 app.use(passport.session());

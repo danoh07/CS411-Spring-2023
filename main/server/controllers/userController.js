@@ -10,7 +10,7 @@ const loginUser = async (req, res) => {
     const {email, password} = req.body
   
     try {
-      const user = await User.login(email, password, false)
+      const user = await User.login(email, password, false, null, null)
   
       // create a token
       const token = createToken(user._id)
@@ -26,7 +26,7 @@ const signupUser = async (req, res) => {
   const {email, password} = req.body
 
   try {
-    const user = await User.signup(email, password, false)
+    const user = await User.signup(email, password, false, null, null)
 
     // create a token
     const token = createToken(user._id)
@@ -41,11 +41,15 @@ const signupUser = async (req, res) => {
 const googleLoginUser = async (req, res) => {
   try {
     const user = req.user
+    
     const { email } = user
+
     // create a token
     const token = createToken(user._id)
-    
+
+    // check if accessToken exist for google
     res.status(200).json({email, token})
+
   } catch (error) {
     res.status(400).json({error: error.message})
   }

@@ -11,7 +11,7 @@ const Home = () => {
   const {user} = useAuthContext()
 
   useEffect(() => {
-
+    
     const fetchPlaylists = async () => {
       const response = await fetch('/api/playlists', {
         headers: {
@@ -30,7 +30,41 @@ const Home = () => {
 
   }, [dispatch, user])
 
-  
+  const handleClick = () => {
+    window.open('http://localhost:8888/api/spotify/getAuthUrl', "_self")
+  }
+  const handlegetplaylist= async () => {
+    const response = await fetch('/api/spotify/get/playlist', {
+      method: 'Get',
+      headers: {'Content-Type': 'application/json'},
+    })
+    const json = await response.json()
+
+    console.log(json.body.items)
+  }
+
+  const handlegetsearch= async () => {
+    const response = await fetch('/api/spotify/search/track' + '/shake it off', {
+      method: 'Get',
+      headers: {'Content-Type': 'application/json'},
+    })
+    const json = await response.json()
+
+    console.log(json)
+  }
+
+  const handlegetytplaylist= async () => {
+    const response = await fetch('/api/youtube/myPlaylist', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`
+      },
+    })
+    const json = await response.json()
+
+    console.log(json)
+  }
 
   return (
     <div className="home">
@@ -39,6 +73,11 @@ const Home = () => {
           <PlaylistDetails playlist={playlist} key={playlist._id} />
         ))}
       </div>
+      <button onClick={handleClick}>spotify Test</button>
+      <button onClick={handlegetplaylist}>spotify playlist</button>
+      <button onClick={handlegetsearch}>spotify search</button>
+      <button onClick={handlegetytplaylist}>youtube playlist</button>
+
       <PlaylistForm />
     </div>
   )

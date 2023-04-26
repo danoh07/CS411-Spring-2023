@@ -192,7 +192,8 @@ form.signup, form.login {
 
 .button-container{
   text-align: center;
-  margin-top: 5%;
+  margin-top: 3%;
+  margin-bottom: 3%;
 }
 
 .convertButton {

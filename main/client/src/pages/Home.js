@@ -210,7 +210,7 @@ const Home = () => {
       </div>
 
       <div className="spotify-playlists">
-        <h1>Playlists</h1>
+        <h1>Spotify Playlists</h1>
         <div className="library-body">
           {SpPlaylists.map((playlist) => (
             <div className="playlist-card"><SpotifyPlaylist playlist={playlist} key={playlist.id}/></div>

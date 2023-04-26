@@ -1,0 +1,36 @@
+/* Home.module.css */
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .playlists, .youtube-playlists {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Align items from left to right */
+    gap: 16px; /* Adjust the space between playlist items */
+    margin-bottom: 24px; /* Adjust the space between rows */
+    width: 100%; /* Set the width of the container to 100% */
+    max-width: 1200px; /* Set a maximum width for the container */
+  }
+  
+  
+  .youtube-playlist {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 240px; /* Adjust the width of the playlist item */
+  }
+
+  .playlist-videos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+    width: 100%;
+    max-width: 1200px;
+  }
+  
+  

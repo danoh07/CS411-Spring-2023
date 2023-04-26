@@ -4,7 +4,6 @@ import { useAuthContext } from "../hooks/useAuthContext"
 // components
 import PlaylistDetails from "../components/PlaylistDetails"
 import PlaylistForm from "../components/PlaylistForm"
-import SpotifyPlaylistGalleryItem from "../components/SpotifyPlaylistGalleryItem"
 
 // for state variable to store playlists
 import { useState } from "react";
@@ -131,11 +130,10 @@ const Home = () => {
       <div className="spotify-playlist">
         <img src={playlist.images[0].url} alt={playlist.name} className="spotify-playlist-img" />
         <p className="spotify-playlist-name">{playlist.name}</p>
-        <button className="convertButton">Convert to YouTube Playlist</button>
+        <div className="button-container">
+          <button className="convertButton">Convert to YouTube Playlist</button>
+        </div>
       </div>
-      
-      
-    
 
     //   <div className="gallery">
     //   {SpPlaylists.map((playlist) => (

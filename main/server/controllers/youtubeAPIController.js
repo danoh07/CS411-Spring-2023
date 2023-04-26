@@ -5,7 +5,7 @@ const User = require('../models/userModel');
 const oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
-    process.env.GOOGLE_CLITET_REDIRECT_URI
+    process.env.GOOGLE_CLIENT_REDIRECT_URI
   );
 
 // Configure YouTube API client
@@ -42,7 +42,7 @@ const getMyPlaylist = async (req, res) => {
         console.log(`${playlist.snippet.title} (${playlist.id})`);
         })
         
-        res.status(200).json(respond)
+        res.status(200).json(playlists);
 
     } catch (error) {
         res.status(400).json({error: error})

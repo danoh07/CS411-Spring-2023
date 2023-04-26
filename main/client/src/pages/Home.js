@@ -8,16 +8,25 @@ import PlaylistForm from "../components/PlaylistForm"
 // for state variable to store playlists
 import { useState } from "react";
 
+// Import the CSS module
+import styles from "./Home.module.css";
+
+
 const Home = () => {
 
   const {playlists, dispatch} = usePlaylistContext()
   const {user} = useAuthContext()
+  const [error, setError] = useState(null);
 
   // YT playlist state var
   const [ytPlaylists, setYtPlaylists] = useState([]);
 
   // // Spotify
   const [SpPlaylists, setSpPlaylists] = useState([]);
+
+  // state var for individual playlist data
+  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+
 
   useEffect(() => {
     const fetchPlaylists = async () => {
@@ -116,13 +125,54 @@ const Home = () => {
   // component that will display YT playlist info
   const YouTubePlaylist = ({ playlist }) => {
     return (
-      <div className="youtube-playlist">
+      <div 
+        className="youtube-playlist"
+        onClick={() => fetchPlaylistVideos(playlist.id)}
+      >
         <img src={playlist.snippet.thumbnails.default.url} alt="Thumbnail" />
         <h3>{playlist.snippet.title}</h3>
         <button>Convert to Spotify Playlist</button>
       </div>
     );
   };
+
+  // fetch individual videos in YT playlist
+  const fetchPlaylistVideos = async (playlistId) => {
+    const response = await fetch(`/api/youtube/playlistItems/${playlistId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`,
+      },
+    });
+    const json = await response.json();
+  
+    if (response.ok) {
+      setSelectedPlaylist(json);
+    }
+  
+    console.log(json);
+  };
+
+  function PlaylistVideos({ videos }) {
+    if (!Array.isArray(videos)) {
+      console.error("videos is not an array:", videos);
+      return null;
+    }
+  
+    return (
+      <div className="playlist-videos">
+        {videos.map((video) => (
+          <div key={video.id} className="video">
+            <h3>{video.title}</h3>
+            <p>{video.description}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  
+  
 
   // Displays Spotify Title and Playlist Image
   const SpotifyPlaylist = ({ playlist }) => {
@@ -147,13 +197,13 @@ const Home = () => {
   };
 
   return (
-    <div className="home">
-      <div className="playlists">
+    <div className={styles.home}>
+      <div className={styles.playlists}>
         {playlists && playlists.map(playlist => (
           <PlaylistDetails playlist={playlist} key={playlist._id} />
         ))}
       </div>
-      <div className="youtube-playlists">
+      <div className={styles.youtube-playlists}>
       {ytPlaylists.map((playlist) => (
         <YouTubePlaylist playlist={playlist} key={playlist.id} />
       ))}
@@ -169,7 +219,7 @@ const Home = () => {
         </div>
       </div>
 
- 
+      {selectedPlaylist && <PlaylistVideos videos={selectedPlaylist.items} />}
       <button onClick={handleClick}>spotify Test</button>
       <button onClick={handlegetplaylist}>spotify playlist</button>
       <button onClick={handlegetsearch}>spotify search</button>

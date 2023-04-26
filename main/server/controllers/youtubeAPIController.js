@@ -161,4 +161,32 @@ const logout = (req, res) => {
     }
 }
 
-module.exports = {getMyPlaylist, createPlaylist, updatePlaylist, logout, search}
+const getPlaylistItems = async (req, res) => {
+    try {
+      const user = req.user;
+      const { playlistId } = req.params;
+  
+      oauth2Client.setCredentials({
+        access_token: user.accessToken,
+      });
+  
+      const youtube = google.youtube({
+        version: 'v3',
+        auth: oauth2Client,
+      });
+  
+      const response = await youtube.playlistItems.list({
+        part: 'snippet',
+        playlistId,
+        maxResults: 25,
+      });
+      
+      console.log(response.data);
+      res.status(200).json(response.data);
+    } catch (error) {
+      res.status(400).json({ error: error });
+    }
+  };
+  
+
+module.exports = {getMyPlaylist, createPlaylist, updatePlaylist, logout, search, getPlaylistItems}

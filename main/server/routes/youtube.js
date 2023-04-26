@@ -7,9 +7,13 @@ const {
     logout } = require('../controllers/youtubeAPIController')
 const requireAuth = require('../middleware/requireAuth');
 
+const { getPlaylistItems } = require('../controllers/youtubeAPIController');
+
 const router = express.Router()
 
 router.use(requireAuth)
+
+router.get('/playlistItems/:playlistId', getPlaylistItems);
 
 router.get('/myPlaylist', getMyPlaylist)
 

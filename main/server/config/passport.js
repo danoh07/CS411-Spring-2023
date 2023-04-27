@@ -15,8 +15,10 @@ const strategy = new GoogleStrategy({
 async (request, accessToken, refreshToken, profile, done) => {
   try {
     // try to see if user exist in DB and login if they do
-    const user = await User.login(profile.email, null, true, accessToken, refreshToken)
+    const user = await User.login(profile.email, null, true)
     request.user = user
+    request.session.googleAccessToken = accessToken
+    request.session.googleRefreshToken = refreshToken
 
     return done(null, user)
   // if user doesn't exist in the db then create new user and store them in DB

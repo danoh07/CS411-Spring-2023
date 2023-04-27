@@ -71,10 +71,12 @@ const Home = () => {
       },
         });
         const data = await response.json();
-
+        
         if (response.ok) {
           setSpPlaylists(data.body.items);
         }
+
+
     }
 
   
@@ -86,6 +88,7 @@ const Home = () => {
   }, [dispatch, user]);
 
   const fetchPlaylistTracks = async (playlistId) => {
+    console.log(playlistId)
     const response = await fetch(`/api/spotify/get/playlists/${playlistId}/tracks`, {
       method: 'GET',
       headers: {
@@ -165,6 +168,7 @@ const Home = () => {
 
   // fetch individual videos in YT playlist
   const fetchPlaylistVideos = async (playlistId) => {
+    console.log(playlistId)
     const response = await fetch(`/api/youtube/playlistItems/${playlistId}`, {
       method: 'GET',
       headers: {
@@ -198,14 +202,53 @@ const Home = () => {
       </div>
     );
   }
+
+  const handleConvertPlaylist = async () => {
+    const url = '5G523ZrqMvswd6v4EIKXJY'
+    const response = await fetch(`/api/convert/spotify/playlist/youtube/${url}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`,
+      },
+    })
+
+    if (response.ok) {
+      console.log(response)
+    }
+
+
+  }
   
+  
+  const handleConvertPlaylistToSpotifty = async () => {
+    const url = 'PL1WTFXTGiZrnrtQuiPere9iZopkoQB9F8'
+    const response = await fetch(`/api/convert/youtube/playlist/spotify/${url}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${user.token}`,
+      },
+    })
+
+    if (response.ok) {
+      console.log(response)
+    }
+  }
   
 
   // Displays Spotify Title and Playlist Image
   const SpotifyPlaylist = ({ playlist }) => {
+    
+    var url ="" 
+
+    if (playlist.images[0]) {
+      url = playlist.images[0].url
+    }
+    
     return (
       <div className="spotify-playlist" onClick={() => fetchPlaylistTracks(playlist.id)}>
-        <img src={playlist.images[0].url} alt={playlist.name} className="spotify-playlist-img" />
+        <img src={url} alt={playlist.name} className="spotify-playlist-img" />
         <p className="spotify-playlist-name">{playlist.name}</p>
         <div className="button-container">
           <button className="convertButton">Convert to YouTube Playlist</button>
@@ -261,7 +304,8 @@ const Home = () => {
       <button onClick={handlegetplaylist}>spotify playlist</button>
       <button onClick={handlegetsearch}>spotify search</button>
       <button onClick={handlegetytplaylist}>youtube playlist</button>
-
+      <button onClick={handleConvertPlaylist}>convert playlist</button>
+      <button onClick={handleConvertPlaylistToSpotifty}>convert playlist to spotify</button>
       <PlaylistForm />
     </div>
 

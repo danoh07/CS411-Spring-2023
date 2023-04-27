@@ -12,16 +12,14 @@ const oauth2Client = new google.auth.OAuth2(
 const youtubeApi = google.youtube({
     version: 'v3',
     auth: process.env.YOUTUBE_API_KEY,
-  });
+});
 
 
 const getMyPlaylist = async (req, res) => {
     try {
-        const user = req.user
-        console.log(user)
-
+     
         oauth2Client.setCredentials({
-            access_token: user.accessToken
+            access_token: req.session.googleAccessToken
         });
           
 
@@ -55,7 +53,7 @@ const createPlaylist = async (req, res) => {
         console.log(user)
 
         oauth2Client.setCredentials({
-            access_token: user.accessToken
+            access_token: req.session.googleAccessToken
         });
           
 
@@ -93,7 +91,7 @@ const updatePlaylist = async (req, res) => {
         console.log(user)
 
         oauth2Client.setCredentials({
-            access_token: user.accessToken
+            access_token: req.session.googleAccessToken
         });
           
 
@@ -148,16 +146,17 @@ const search = async (req, res) => {
         }
 }
 
-const logout = (req, res) => {
+const logout = async (req, res, next) => {
     try {
         const user = req.user
         const { email } = user
-        console.log(user)
-        User.findOneAndUpdate({ email }, {$unset: { accessToken: "", refreshToken: "" }})
-        res.status(200)
+
+        await User.findOneAndUpdate({ email }, {$unset: { accessToken: "", refreshToken: "" }})
+       
+        next()
 
     } catch (error) {
-      res.status(400).json({error: error})
+      next(error)
     }
 }
 
@@ -167,7 +166,7 @@ const getPlaylistItems = async (req, res) => {
       const { playlistId } = req.params;
   
       oauth2Client.setCredentials({
-        access_token: user.accessToken,
+        access_token: req.session.googleAccessToken,
       });
   
       const youtube = google.youtube({
@@ -189,4 +188,4 @@ const getPlaylistItems = async (req, res) => {
   };
   
 
-module.exports = {getMyPlaylist, createPlaylist, updatePlaylist, logout, search, getPlaylistItems}
+module.exports = {getMyPlaylist, createPlaylist, updatePlaylist, logout, search, getPlaylistItems,}

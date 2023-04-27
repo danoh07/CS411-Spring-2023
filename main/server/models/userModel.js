@@ -25,12 +25,12 @@ const userSchema = new Schema({
 })
 
 // static signup method
-userSchema.statics.signup = async function(email, password, oauth, accessToken, refreshToken) {
+userSchema.statics.signup = async function(email, password, oauth) {
 
   // if its using third party oauth 
   if (oauth) {
 
-    const user = await this.create({ email, accessToken, refreshToken })
+    const user = await this.create({ email })
     return user
 
   } else {
@@ -62,18 +62,16 @@ userSchema.statics.signup = async function(email, password, oauth, accessToken, 
 }
 
 // static login method
-userSchema.statics.login = async function(email, password, oauth, accessToken, refreshToken) {
+userSchema.statics.login = async function(email, password, oauth) {
   // if its using third party oauth 
   if (oauth) {
 
     const user = await this.findOne({ email })
     if (!user) {
       console.log('Creating new user')
-      const user = await this.signup(email, null, true, accessToken, refreshToken)
+      const user = await this.signup(email, null, true )
       return user
     }
-
-    const user2 = await this.findOneAndUpdate({ email }, {accessToken, refreshToken})
 
     return user
 

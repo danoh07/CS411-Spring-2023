@@ -21,23 +21,29 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
 
     const getGoogleUser = async () => {
-      const response = await fetch('/api/user/auth/google/login/success', {
-        method: "GET",
-        credentials: "include",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Credentials": true,
-        }})
-  
-      const json = await response.json()
-  
-      if (response.ok) {
-        // save the user to local storage
-        localStorage.setItem('user', JSON.stringify(json))
-        // update the auth context
-        dispatch({type: 'LOGIN', payload: json})
+
+      try {
+        const response = await fetch('/api/user/auth/google/login/success', {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Credentials": true,
+          }})
+    
+        const json = await response.json()
+
+        if (response.status == 200) {
+          // save the user to local storage
+          localStorage.setItem('user', JSON.stringify(json))
+          // update the auth context
+          dispatch({type: 'LOGIN', payload: json})
       }
+    } catch (error) {
+      console.log(error)
+    }
+
     }
 
     const user = JSON.parse(localStorage.getItem('user'))

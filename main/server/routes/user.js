@@ -1,6 +1,8 @@
 const express = require('express')
 // controller functions
 const { loginUser, signupUser, googleLoginUser } = require('../controllers/userController')
+const {  logout } = require('../controllers/youtubeAPIController')
+const { logOut } = require('../controllers/spotifyAPIController')
 
 const router = express.Router()
 const passport = require('passport');
@@ -26,7 +28,7 @@ router.get("/auth/login/failed", (req, res) => {
     res.status(400).json({error: 'Google Authentication Failed'})
 });
 
-router.get("/auth/google/logout", async(req, res) => {
+router.get("/auth/google/logout", logout, logOut, async (req, res) => {
     req.logout();
     // todo clear / unset access token from the database 
     res.redirect('http://localhost:3000/login');

@@ -29,6 +29,7 @@ var spotifyApi = new SpotifyWebApi({
     redirectUri: 'http://localhost:8888/api/spotify/callback'
   });
 
+
 const getAuthUrl =  (req, res) => {
     res.redirect(spotifyApi.createAuthorizeURL(scopes));
 }
@@ -52,8 +53,8 @@ const callback = (req, res) => {
         const refresh_token = data.body['refresh_token'];
         const expires_in = data.body['expires_in'];
 
-        spotifyApi.setAccessToken(access_token);
-        spotifyApi.setRefreshToken(refresh_token);
+        req.session.spotifyAccessToken = access_token
+        req.session.spotifyRefreshToken = refresh_token
 
         console.log('access_token:', access_token);
 
@@ -73,22 +74,43 @@ const callback = (req, res) => {
 
   const getMe = async (req, res, next) => {
     try { 
+      
+      const spotifyApi = new SpotifyWebApi({
+        clientId: process.env.SPOTIFY_CLIENT_ID,
+        clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+        redirectUri: 'http://localhost:8888/api/spotify/callback'
+      });
+
+      spotifyApi.setAccessToken(req.session.spotifyAccessToken)
 
       const profile = await spotifyApi.getMe()
 
       req.profile = profile
+
+      spotifyApi.resetAccessToken()
+
       next()
 
     } catch (error) {
+      console.log(error)
       res.status(400).json({error: error})
     }
   }
 
   const getPlaylist = async (req, res) => {
     try {
-      const profile = req.profile
-      const response = await spotifyApi.getUserPlaylists(profile.body.id)
-      console.log(response.body)
+
+        const spotifyApi = new SpotifyWebApi({
+          clientId: process.env.SPOTIFY_CLIENT_ID,
+          clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+          redirectUri: 'http://localhost:8888/api/spotify/callback'
+        });
+
+        const profile = req.profile
+        spotifyApi.setAccessToken(req.session.spotifyAccessToken)
+        const response = await spotifyApi.getUserPlaylists(profile.body.id)
+
+        spotifyApi.resetAccessToken()
 
       res.status(200).json(response)
       
@@ -101,6 +123,14 @@ const callback = (req, res) => {
   const searchTrack = async (req, res) => {
     try { 
 
+    const spotifyApi = new SpotifyWebApi({
+      clientId: process.env.SPOTIFY_CLIENT_ID,
+      clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+      redirectUri: 'http://localhost:8888/api/spotify/callback'
+    });
+
+    
+    spotifyApi.setAccessToken(req.session.spotifyAccessToken)
     const { searchParam }  = req.params
 
     const SearchOptions = {
@@ -110,6 +140,7 @@ const callback = (req, res) => {
 
     const response = await spotifyApi.searchTracks(searchParam, SearchOptions)
 
+    spotifyApi.resetAccessToken()
     res.status(200).json(response)
 
     } catch (error) {
@@ -119,10 +150,20 @@ const callback = (req, res) => {
 
   const createPlaylist = async (req, res) => {
     try {
+
+      const spotifyApi = new SpotifyWebApi({
+        clientId: process.env.SPOTIFY_CLIENT_ID,
+        clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+        redirectUri: 'http://localhost:8888/api/spotify/callback'
+      });
+  
+      
+      spotifyApi.setAccessToken(req.session.spotifyAccessToken)
+
       const { playlistName, playlistDescription } = req.body
 
       const createdPlaylist = await spotifyApi.createPlaylist(playlistName, playlistDescription)
-
+      spotifyApi.resetAccessToken()
       res.status(200).json(createdPlaylist)
 
     } catch (error) {
@@ -131,10 +172,20 @@ const callback = (req, res) => {
   } 
   const addTrackstoPlaylist = async (req, res) => {
     try {
+
+      const spotifyApi = new SpotifyWebApi({
+        clientId: process.env.SPOTIFY_CLIENT_ID,
+        clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+        redirectUri: 'http://localhost:8888/api/spotify/callback'
+      });
+  
+      
+      spotifyApi.setAccessToken(req.session.spotifyAccessToken)
+
       const { playlistId , tracks } = req.body
 
       const updatedPlaylist = await spotifyApi.addTracksToPlaylist(playlistId, tracks)
-
+      spotifyApi.resetAccessToken()
       res.status(200).json(updatedPlaylist)
 
     } catch (error) {
@@ -142,26 +193,37 @@ const callback = (req, res) => {
     }
   } 
 
-  const logOut = (req, res) => {
+  const logOut = (req, res, next) => {
     try {
       spotifyApi.resetAccessToken()
       spotifyApi.resetRefreshToken()
 
-      res.status(200)
+      next()
 
     } catch (error) {
-      res.status(400).json({error: error})
+      next(error)
     }
   }
 
   const getTracks = async (req, res) => {
     try {
+
+      const spotifyApi = new SpotifyWebApi({
+        clientId: process.env.SPOTIFY_CLIENT_ID,
+        clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+        redirectUri: 'http://localhost:8888/api/spotify/callback'
+      });
+  
+      
+      spotifyApi.setAccessToken(req.session.spotifyAccessToken)
+
       const {playlistId } = req.params;
 
       const tracksResponse = await spotifyApi.getPlaylistTracks(playlistId);
       const tracks = tracksResponse.body.items;
       res.status(200).json(tracks);
     } catch (error) {
+      spotifyApi.resetAccessToken()
       res.status(400).json({error: error});
     }
   };
@@ -176,5 +238,6 @@ const callback = (req, res) => {
     addTrackstoPlaylist,
     logOut,
     getTracks,
+    spotifyApi
   };
   

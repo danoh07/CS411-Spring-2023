@@ -5,6 +5,7 @@ const playlistRoutes = require('./routes/playlists');
 const userRoutes = require('./routes/user');
 const spotifyRoutes = require('./routes/spotify');
 const youtubeRoutes = require('./routes/youtube');
+const convertRoutes = require('./routes/convert')
 const passport = require('passport');
 const cookieSession = require('cookie-session');
 require('./config/passport');
@@ -25,16 +26,17 @@ app.use(cookieSession({
     maxAge: 24 * 60 * 60 * 100,
 }))
 
+app.use(passport.initialize())
+app.use(passport.session());
+app.use('/api/user', userRoutes)
 
 
 // routes
 app.use('/api/playlists', playlistRoutes)
 app.use('/api/spotify', spotifyRoutes)
 app.use('/api/youtube', youtubeRoutes)
+app.use('/api/convert', convertRoutes)
 
-app.use(passport.initialize())
-app.use(passport.session());
-app.use('/api/user', userRoutes)
 
 //connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)

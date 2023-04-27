@@ -51,7 +51,7 @@ const googleLoginUser = async (req, res) => {
     res.status(200).json({email, token})
 
   } catch (error) {
-    res.status(400).json({error: error.message})
+    res.status(202).json({error: 'User Not yet logged in'})
   }
 }
 

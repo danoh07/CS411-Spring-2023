@@ -10,6 +10,7 @@ import { useState } from "react";
 
 // Import the CSS module
 import styles from "./Home.module.css";
+import TrackList from "./Tracks"
 
 
 const Home = () => {
@@ -27,8 +28,8 @@ const Home = () => {
   // state var for individual playlist data
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
 
-  // // State var for Spotify Tracks
-  const [selectedSpPlaylist, setSelectedSpPlaylist] = useState(null);
+  // // // State var for Spotify Tracks
+  // const [selectedSpPlaylist, setSelectedSpPlaylist] = useState(null);
 
   
 
@@ -86,6 +87,7 @@ const Home = () => {
   }, [dispatch, user]);
 
   const fetchPlaylistTracks = async (playlistId) => {
+    
     const response = await fetch(`/api/spotify/get/playlists/${playlistId}/tracks`, {
       method: 'GET',
       headers: {
@@ -95,12 +97,12 @@ const Home = () => {
     const json = await response.json();
 
     if (response.ok) {
-      console.log(json);
-      // if (json.body) {
-      //   setSelectedSpPlaylist(json.body.tracks);
-      // } else {
-      //   console.error('Response has no body:', json);
-      // }
+      // Only keeping console.log(json) gives the entire track detail
+      // console.log(json);
+
+      // This alone will list out the track Titles only as an array
+      const trackTitles = json.map((track) => track.track.name);
+      console.log(trackTitles);
       
     } else {
       console.error('Failed to fetch playlist tracks:', json);
@@ -210,6 +212,11 @@ const Home = () => {
         <div className="button-container">
           <button className="convertButton">Convert to YouTube Playlist</button>
         </div>
+        {/* <ul>
+          {TrackList.map((track) => (
+            <li key={track.id}>{track.name}</li>
+          ))}
+        </ul> */}
       </div>
 
     );

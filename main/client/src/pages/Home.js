@@ -12,6 +12,8 @@ import { useState } from "react";
 import styles from "./Home.module.css";
 import TrackList from "./Tracks"
 
+// Import YouTubeVideo for displaying individual videos in playlists
+import YouTubeVideo from '../components/YouTubeVideo';
 
 const Home = () => {
 
@@ -188,6 +190,7 @@ const Home = () => {
     console.log(json);
   };
 
+
   function PlaylistVideos({ videos }) {
     if (!Array.isArray(videos)) {
       console.error("videos is not an array:", videos);
@@ -198,13 +201,15 @@ const Home = () => {
       <div className="playlist-videos">
         {videos.map((video) => (
           <div key={video.id} className="video">
-            <h3>{video.title}</h3>
-            <p>{video.description}</p>
+            <img src={video.snippet.thumbnails.default.url} alt={video.snippet.title} />
+            <h3>{video.snippet.title}</h3>
           </div>
         ))}
       </div>
     );
   }
+  
+  
 
   const handleConvertPlaylist = async () => {
     const url = '5G523ZrqMvswd6v4EIKXJY'

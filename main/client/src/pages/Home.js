@@ -287,7 +287,7 @@ const Home = () => {
           <PlaylistDetails playlist={playlist} key={playlist._id} />
         ))}
       </div>
-      <div className={styles.youtube-playlists}>
+      <div className={styles.youtubePlaylists}>
       {ytPlaylists.map((playlist) => (
         <YouTubePlaylist playlist={playlist} key={playlist.id} />
       ))}

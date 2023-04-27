@@ -95,17 +95,16 @@ const Home = () => {
     const json = await response.json();
 
     if (response.ok) {
-      if (json.body) {
-        setSelectedSpPlaylist(json.body.tracks);
-      } else {
-        console.error('Response has no body:', json);
-      }
+      console.log(json);
+      // if (json.body) {
+      //   setSelectedSpPlaylist(json.body.tracks);
+      // } else {
+      //   console.error('Response has no body:', json);
+      // }
       
     } else {
       console.error('Failed to fetch playlist tracks:', json);
     }
-
-    console.log(json);
   };
 
   const handleClick = () => {

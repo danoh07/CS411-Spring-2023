@@ -14,6 +14,8 @@ import TrackList from "./Tracks"
 
 // Import YouTubeVideo for displaying individual videos in playlists
 import YouTubeVideo from '../components/YouTubeVideo';
+import YouTubePlaylist from "../components/YouTubePlaylist";
+
 
 const Home = () => {
 
@@ -157,20 +159,6 @@ const Home = () => {
     console.log(json)
   }
 
-  // component that will display YT playlist info
-  const YouTubePlaylist = ({ playlist }) => {
-    return (
-      <div 
-        className="youtube-playlist"
-        onClick={() => fetchPlaylistVideos(playlist.id)}
-      >
-        <img src={playlist.snippet.thumbnails.default.url} alt="Thumbnail" />
-        <h3>{playlist.snippet.title}</h3>
-        <button>Convert to Spotify Playlist</button>
-      </div>
-    );
-  };
-
   // fetch individual videos in YT playlist
   const fetchPlaylistVideos = async (playlistId) => {
     console.log(playlistId)
@@ -289,9 +277,14 @@ const Home = () => {
       </div>
       <div className={styles.youtubePlaylists}>
       {ytPlaylists.map((playlist) => (
-        <YouTubePlaylist playlist={playlist} key={playlist.id} />
+        <YouTubePlaylist
+          playlist={playlist}
+          key={playlist.id}
+          fetchPlaylistVideos={fetchPlaylistVideos}
+        />
       ))}
       </div>
+
 
       <div className="spotify-playlists">
         <h1>Spotify Playlists</h1>

@@ -298,22 +298,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* <div className="spotify-tracks">
-        <h2>Tracks</h2>
-        {tracks.map((track, index) => (
-          <Track key={index} track={track} />
-        ))}
-      </div> */}
-
-      {/* <div className="home">
-        <h1>My Spotify Tracks</h1>
-        <div className="tracks">
-          {selectedSpPlaylist && selectedSpPlaylist.map((track, index) => (
-          <fetchSpotifyPlaylistTracks key={index} track={track} />
-        ))}
-      </div>
-    </div> */}
-
       {selectedPlaylist && <PlaylistVideos videos={selectedPlaylist.items} />}
       <button onClick={handleClick}>spotify Test</button>
       <button onClick={handlegetplaylist}>spotify playlist</button>

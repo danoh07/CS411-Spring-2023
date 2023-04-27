@@ -254,11 +254,11 @@ const Home = () => {
           <button className="convertButton">Convert to YouTube Playlist</button>
         </div>
         {playlist.id == selectedPlaylistId && tracks.length > 0 && (
-          <ul>
+          <ol>
             {tracks.map((track, index) => (
-              <li key={index}>{track}</li>
+              <li className="spotifyTrack" key={index}>{track}</li>
             ))}
-          </ul>
+          </ol>
         )}
         {/* <ul>
           {TrackList.map((track) => (

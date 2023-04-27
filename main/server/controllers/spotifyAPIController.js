@@ -154,6 +154,18 @@ const callback = (req, res) => {
     }
   }
 
+  const getTracks = async (req, res) => {
+    try {
+      const {playlistId } = req.params;
+
+      const tracksResponse = await spotifyApi.getPlaylistTracks(playlistId);
+      const tracks = tracksResponse.body.items;
+      res.status(200).json(tracks);
+    } catch (error) {
+      res.status(400).json({error: error});
+    }
+  };
+
   module.exports = {
     callback,
     getAuthUrl,
@@ -162,6 +174,7 @@ const callback = (req, res) => {
     searchTrack,
     createPlaylist,
     addTrackstoPlaylist,
-    logOut
+    logOut,
+    getTracks,
   };
   

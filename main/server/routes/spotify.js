@@ -7,7 +7,8 @@ const {
     getPlaylist,
     searchTrack,
     createPlaylist,
-    addTrackstoPlaylist } = require('../controllers/spotifyAPIController')
+    addTrackstoPlaylist, 
+    getTracks            } = require('../controllers/spotifyAPIController')
 
 const router = express.Router()
 
@@ -24,5 +25,7 @@ router.post('/create/playlist', createPlaylist)
 router.post('/add/playlist/tracks', addTrackstoPlaylist)
 
 router.get('/logout', logOut)
+
+router.get('/get/playlists/:playlistId/tracks', getMe, getTracks)
 
 module.exports = router

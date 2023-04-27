@@ -35,6 +35,9 @@ const Home = () => {
   // State var for track titles
   const [tracks, setTracks] = useState([]);
 
+  // Keep track of current Spotify Playlist
+  const [selectedPlaylistId, setSelectedPlaylistId] = useState(null);
+
   
 
 
@@ -110,6 +113,7 @@ const Home = () => {
       // This alone will list out the track Titles only as an array
       const trackTitles = json.map((track) => track.track.name);
       setTracks(trackTitles);
+      setSelectedPlaylistId(playlistId);
       console.log(trackTitles);
       
     } else {
@@ -249,7 +253,7 @@ const Home = () => {
         <div className="button-container">
           <button className="convertButton">Convert to YouTube Playlist</button>
         </div>
-        {tracks.length > 0 && (
+        {playlist.id == selectedPlaylistId && tracks.length > 0 && (
           <ul>
             {tracks.map((track, index) => (
               <li key={index}>{track}</li>

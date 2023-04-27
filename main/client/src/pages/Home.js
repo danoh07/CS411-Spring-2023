@@ -28,7 +28,6 @@ const Home = () => {
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
 
   // // State var for Spotify Tracks
-  
   const [selectedSpPlaylist, setSelectedSpPlaylist] = useState(null);
 
   
@@ -78,19 +77,6 @@ const Home = () => {
         }
     }
 
-    // async function fetchSpotifyTracks() {
-    //   const response = await fetch('apo/spotify/tracks', {
-    //     method: 'GET',
-    //     headers: {
-    //       'Authorization': `Bearer ${user.token}`
-    //     }
-    //   });
-    //   const json = await response.json();
-
-    //   if (response.ok) {
-    //     setTracks(json);
-    //   }
-    // }
   
     if (user) {
       fetchPlaylists();
@@ -133,13 +119,6 @@ const Home = () => {
     const json = await response.json()
 
     console.log(json.body.items)
-
-    // Console log each track in playlist
-    // if (response.ok) {
-    //   json.body.items[0].tracks.items.forEach((track) => {
-    //     console.log(track.track.name);
-    //   });
-    // }
   }
 
   const handlegetsearch= async () => {
@@ -234,76 +213,10 @@ const Home = () => {
         </div>
       </div>
 
-    //   <div className="gallery">
-    //   {SpPlaylists.map((playlist) => (
-    //     <div key={playlist.id} className="gallery-item">
-    //       <img src={playlist.images[0].url} alt={playlist.name} />
-    //       <h3>{playlist.name}</h3>
-    //     </div>
-    //   ))}
-    // </div>
     );
   };
 
-  // const fetchSpotifyPlaylistTracks = async (playlistId) => {
-  //   const response = await fetch(`/api/spotify/playlists/${playlistId}`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': `Bearer ${user.token}`,
-  //     },
-  //   });
-  //   const json = await response.json();
-
-  //   if (response.ok) {
-  //     setSelectedSpPlaylist(json);
-  //   }
-  //   console.log(json);
-  // };
-
-  // function SpotifyPlaylistTracks({ tracks }) {
-  //   if (!Array.isArray(tracks)) {
-  //     console.error("tracks is not an array:", tracks);
-  //     return null;
-  //   }
-
-  //   return (
-  //     <div className="SpotifyPlaylistTracks">
-  //       {tracks.map((track) => (
-  //         <div key={track.id} className="track">
-  //           <h3>{track.name}</h3>
-  //           <p>{track.artists.map((artist) => artist.name).join(', ')}</p>
-  //         </div>
-  //       ))}
-  //     </div>
-  //   );
-  // }
-
-
-  // const fetchSpotifyTracks = async ({ playlist }) => {
-  //   return (
-  //     <div className="spotify-tracks">
-        
-  //     </div>
-  //   )
-  // }
-
-// class Home extends React.Component {
-//   state = {
-//     tracks: []
-//   };
-
-//   async componentDidMount() {
-//     const tracks = await fetchSpotifyTracks();
-//     this.setState({ tracks });
-//   }
-
-//   render() {
-//     const{ tracks } = this.state;
-
-//   }
-// }
-
+  
 
   return (
     <div className={styles.home}>

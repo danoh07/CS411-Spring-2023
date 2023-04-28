@@ -32,6 +32,21 @@ header a {
   margin: 0 auto;
 }
 
+form button {
+  background: var(--primary);
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  font-family: "Poppins";
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:disabled,
+button[disabled]{
+  opacity: 0.6;
+}
+
 /* homepage */
 .home {
   display: grid;
@@ -47,8 +62,10 @@ header a {
   box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
 }
 .playlist-details h4 {
-  margin: 0 0 10px 0;
-  font-size: 1.2em;
+  position: absolute;
+  left: 32%;
+  margin: 0 0 20px 0;
+  font-size: 1.8em;
   color: var(--primary);
 }
 .playlist-details p {
@@ -56,7 +73,7 @@ header a {
   font-size: 0.9em;
   color: #555;
 }
-.playlist-details span {
+.playlist-details span.material-symbols-outlined {
   position: absolute;
   top: 20px;
   right: 20px;
@@ -67,6 +84,65 @@ header a {
   color: #333;
 }
 
+.playlist-details span.arrow-button {
+  position: absolute;
+  bottom: 13px;
+  right: 19px;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.playlist-details span.arrow-button-up{
+  position: absolute;
+  bottom:   0px;
+  right: 19px;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.playlist-details span.convert-button {
+  background: var(--primary);
+  border-radius: 2%;
+  bottom: 30px;
+  margin-left: 41%;
+  cursor: pointer;
+  padding: 6px;
+  color: #fff;
+} 
+
+.playlist-details img {
+  background: #f1f1f1;
+  border-radius: 8px;
+  max-width: 30%;
+  height: auto;
+}
+
+.arrow {
+  box-sizing: border-box;
+  height: 1.3vw;
+  width: 1.3vw;
+  border-style: solid;
+  border-color: rgb(0, 0, 0);
+  border-width: 0px 3px 3px 0px;
+  transform: rotate(45deg);
+  transition: border-width 100ms ease-in-out;
+}
+
+.arrow-up {
+  box-sizing: border-box;
+  height: 1.3vw;
+  width: 1.3vw;
+  border-style: solid;
+  border-color: rgb(0, 0, 0);
+  border-width: 0px 3px 3px 0px;
+  transform: rotate(-135deg);
+  transition: border-width 100ms ease-in-out;
+}
+
+.arrow:hover {
+  border-bottom-width: 4px;
+  border-right-width: 4px;
+}
 /* new playlist form */
 label, input {
   display: block;
@@ -80,23 +156,45 @@ input {
   border-radius: 4px;
   box-sizing: border-box;
 }
-form button {
+button.get-playlist-buttons {
+  display: block;
   background: var(--primary);
   border: 0;
   color: #fff;
-  padding: 10px;
+  padding: 20px;
+  width: 100%;
   font-family: "Poppins";
+  font-size: 2ch;
   border-radius: 4px;
   cursor: pointer;
+  text-align: center;
+  margin-block: 20px;
 }
+button.get-playlist-buttons-youtube {
+  display: block;
+  background: #e7192a;
+  border: 0;
+  color: #fff;
+  padding: 20px;
+  width: 100%;
+  font-family: "Poppins";
+  font-size: 2ch;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  margin-block: 20px;
+}
+
+
 div.error {
   padding: 10px;
-  background: #ffefef;
+  background: white;
   border: 1px solid var(--error);
   color: var(--error);
   border-radius: 4px;
   margin: 20px 0;
 }
+
 input.error {
   border: 1px solid var(--error);
 }
@@ -169,6 +267,11 @@ form.signup, form.login {
   height: 30px;
   margin-right: 30px;
 }
+
+.fa-brands {
+  padding: 10px;
+}
+
 
 /* Spotify Playlist */
 

@@ -2,13 +2,13 @@ import { usePlaylistContext } from "../hooks/usePlaylistContext"
 import { useAuthContext } from "../hooks/useAuthContext"
 import { useEffect, useState } from "react"
 
-const PlaylistDetails = ({ playlist }) => {
+const SpotifyPlaylistDetails = ({ playlist }) => {
 
-    const [videos, setVideos] = useState()
+    const [tracks, setTracks] = useState()
     const [expended, setExpended] = useState(false)
     useEffect(() => {
   
-    }, [videos])
+    }, [tracks])
 
     const { dispatch } = usePlaylistContext()
     const { user } = useAuthContext()
@@ -33,29 +33,26 @@ const PlaylistDetails = ({ playlist }) => {
 
     const testonclick = async () => {
       if (expended) {
-        setVideos(null)
+        setTracks(null)
         setExpended(false)
       } else {
 
         try {
           console.log('clicked!')
-          const response = await fetch(`/api/youtube/playlistItems/${playlist.id}`, {
+          const response = await fetch(`/api/spotify/get/playlists/${playlist.id}/tracks`, {
             method: 'GET',
             headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${user.token}`,
-            },
-          });
-  
+              'Authorization': `Bearer ${user.token}`
+            }
+          })
           const json = await response.json();
-  
+
           if (response.ok) {
-            setVideos(json.items)
+            setTracks(json)
           }
         } catch (error) {
           console.log(error)
         }
-
         setExpended(true)
       }
     }
@@ -63,13 +60,12 @@ const PlaylistDetails = ({ playlist }) => {
     const handleConvertPlaylist = async () => {
       try {
 
-        const response = await fetch(`/api/convert/youtube/playlist/spotify/${playlist.id}`, {
+        const response = await fetch(`/api/convert/spotify/playlist/youtube/${playlist.id}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${user.token}`,
           },
-
         })
     
         if (response.ok) {
@@ -78,23 +74,24 @@ const PlaylistDetails = ({ playlist }) => {
       } catch (error) {
         console.log(error)
       }
+
     }
   
     return (
       <div className="playlist-details">
-        <h4>{playlist.snippet.title}</h4>
-        {playlist.snippet.thumbnails.high.url ? 
-        <img alt="text" src= {playlist.snippet.thumbnails.high.url} /> : 
+        <h4>{playlist.name}</h4>
+        {playlist.images[0] ? 
+        <img alt="text" src= {playlist.images[0].url} /> : 
         <img alt="text" src="" />}
         <span className="material-symbols-outlined" onClick={handleClick}>delete</span>
         {!expended && <span className="arrow-button" onClick={testonclick}><div class="arrow"></div></span>}
         {expended && <span className="arrow-button-up" onClick={testonclick}><div class="arrow-up"></div></span>}
-        <div>{videos && (videos.map(video => { console.log(video)
-          return <h3>{video.snippet.title}</h3>
+        <div>{tracks && (tracks.map(track => { console.log(track)
+          return <h3>{track.track.name}</h3>
         }))}</div>
         {expended && <span className="convert-button" onClick={handleConvertPlaylist}>Convert To Spotify</span>}
         </div>
     )
   }
   
-  export default PlaylistDetails
+  export default SpotifyPlaylistDetails

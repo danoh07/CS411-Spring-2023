@@ -1,84 +1,54 @@
 import { useState } from 'react'
 import { usePlaylistContext } from '../hooks/usePlaylistContext'
-import { useAuthContext } from '../hooks/useAuthContext'
 
 const PlaylistForm = () => {
   const { dispatch } = usePlaylistContext()
-  const { user } = useAuthContext()
-  const [title, setTitle] = useState('')
-  const [songs, setSongs] = useState('')
-  const [load, setLoad] = useState('')
-  const [error, setError] = useState(null)
-  const [emptyFields, setEmptyFields] = useState([])
-
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const [selectedPlaylist, setSelectedPlaylist] = useState('')
     
-    if(!user) {
-      setError('You must be logged in')
-      return
+  const getYoutube = () => {
+    if (selectedPlaylist !== 'youtube') {
+      console.log('Change playlist to youtube')
+      dispatch({type: 'SET_PLAYLISTS', payload: 'youtube'})
+      setSelectedPlaylist('youtube')
+
     }
+  } 
+  
+  const getSpotify = () => {
+    if (selectedPlaylist !== 'spotify') {
+      console.log('Change playlist to spotify')
 
-    const playlist = {title, songs, load}
-    
-    const response = await fetch('/api/playlists', {
-      method: 'POST',
-      body: JSON.stringify(playlist),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user.token}`
-      }
-    })
+      dispatch({type: 'SET_PLAYLISTS', payload: 'spotify'})
 
-    const json = await response.json()
-
-    if (!response.ok) {
-      setError(json.error)
-      setEmptyFields(json.emptyFields)
+      setSelectedPlaylist('spotify')
     }
-    if (response.ok) {
-      setError(null)
-      setTitle('')
-      setSongs('')
-      setLoad('')
-      setEmptyFields([])
-      console.log('new playlist added:', json)
-      dispatch({type: 'CREATE_PLAYLIST', payload: json})
-    }
+  } 
 
+  const handleClick = () => {
+    window.open('http://localhost:8888/api/spotify/getAuthUrl', "_self")
   }
 
   return (
-    <form className="create" onSubmit={handleSubmit}> 
-      <h3>Add a New Playlist</h3>
-
-      <label>Playlist Title:</label>
-      <input 
-        type="text" 
-        onChange={(e) => setTitle(e.target.value)} 
-        value={title}
-        className={emptyFields.includes('title') ? 'error' : ''}
-      />
-
-      <label>song:</label>
-      <input 
-        type="text" 
-        onChange={(e) => setSongs(e.target.value)} 
-        value={[songs]}
-        className={emptyFields.includes('songs') ? 'error' : ''}
-
-      />
-
-      <label>load:</label>
-      <input 
-        type="number" 
-        onChange={(e) => setLoad(e.target.value)} 
-        value={load} 
-      />
-
-      <button>Add Playlist</button>
-      {error && <div className="error">{error}</div>}
-    </form>
+    <div className='playlist-buttons'>
+      <button disabled={selectedPlaylist === 'youtube'} 
+        className='get-playlist-buttons-youtube'
+        onClick={getYoutube}>
+          <i class="fa-brands fa-youtube fa-xl"/>
+          Get YouTube Playlist
+      </button>
+      <button disabled={selectedPlaylist === 'spotify'} 
+        className='get-playlist-buttons' 
+        onClick={getSpotify}>
+          <i class="fa-brands fa-spotify fa-xl" />
+          Get Spotify Playlist
+        </button>
+      <button disabled={selectedPlaylist === 'spotify' || selectedPlaylist === 'youtube'} 
+      className='get-playlist-buttons' 
+      onClick={handleClick}>
+        <i class="fa-brands fa-spotify fa-xl" />
+        Login to spotify
+      </button>
+    </div>
   )
 }
 

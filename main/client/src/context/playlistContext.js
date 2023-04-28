@@ -8,14 +8,6 @@ export const playlistsReducer = (state, action) => {
       return { 
         playlists: action.payload 
       }
-    case 'CREATE_PLAYLIST':
-      return { 
-        playlists: [action.payload, ...state.playlists] 
-      }
-    case 'DELETE_PLAYLIST':
-      return {
-        playlists: state.playlists.filter((p) => p._id !== action.payload._id)
-      }
     default:
       return state
   }

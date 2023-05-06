@@ -100,11 +100,13 @@ button[disabled]{
   padding: 6px;
 }
 
-.playlist-details span.convert-button {
+.playlist-details button.convert-button {
   background: var(--primary);
+  border-color: var(--primary);
   border-radius: 2%;
+  width: 200px;
   bottom: 30px;
-  margin-left: 41%;
+  margin-left: 38%;
   cursor: pointer;
   padding: 6px;
   color: #fff;
@@ -116,6 +118,21 @@ button[disabled]{
   max-width: 30%;
   height: auto;
 }
+
+.playlist-details div.complete {
+  padding: 15px;
+  background: white;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  border-radius: 6px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  text-align: center;
+  width: 250px;
+
+}
+
 
 .arrow {
   box-sizing: border-box;

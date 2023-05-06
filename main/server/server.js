@@ -23,7 +23,7 @@ app.use((req, res, next) => {
 app.use(cookieSession({
     name: "Session",
     keys: [process.env.KEY],
-    maxAge: 24 * 60 * 60 * 100,
+    maxAge: 24 * 60 * 60 * 1000,
 }))
 
 app.use(passport.initialize())

@@ -47,6 +47,30 @@ const getMyPlaylist = async (req, res) => {
     }
 }
 
+const deletePlaylist = async (req, res) => {
+    try {
+      const { playlistId } = req.params;
+  
+      oauth2Client.setCredentials({
+        access_token: req.session.googleAccessToken
+      });
+  
+      const youtube = google.youtube({
+        version: 'v3',
+        auth: oauth2Client
+      });
+    
+      const response = await youtube.playlists.delete({
+        id: playlistId
+      });
+  
+      res.status(200).json({response});
+
+    } catch (error) {
+      res.status(400).json({error: error})
+    }
+  }
+
 const createPlaylist = async (req, res) => {
     try {
         const user = req.user
@@ -188,4 +212,4 @@ const getPlaylistItems = async (req, res) => {
   };
   
 
-module.exports = {getMyPlaylist, createPlaylist, updatePlaylist, logout, search, getPlaylistItems,}
+module.exports = {deletePlaylist, getMyPlaylist, createPlaylist, updatePlaylist, logout, search, getPlaylistItems,}

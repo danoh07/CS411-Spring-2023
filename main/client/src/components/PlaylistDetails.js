@@ -6,6 +6,7 @@ const PlaylistDetails = ({ playlist }) => {
 
     const [videos, setVideos] = useState()
     const [expended, setExpended] = useState(false)
+    const [completed, setCompleted] = useState(false)
     useEffect(() => {
   
     }, [videos])
@@ -18,7 +19,7 @@ const PlaylistDetails = ({ playlist }) => {
         return
       }
 
-      const response = await fetch('/api/playlists/' + playlist._id, {
+      const response = await fetch(`/api/youtube/delete/playlist/${playlist.id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${user.token}`
@@ -27,7 +28,8 @@ const PlaylistDetails = ({ playlist }) => {
       const json = await response.json()
 
       if (response.ok) {
-        dispatch({type: 'DELETE_PLAYLIST', payload: json})
+        console.log(json)
+        dispatch({type: 'DELETE_PLAYLIST'})
       }
     }
 
@@ -74,6 +76,7 @@ const PlaylistDetails = ({ playlist }) => {
     
         if (response.ok) {
           console.log(response)
+          setCompleted(true)
         }
       } catch (error) {
         console.log(error)
@@ -92,7 +95,8 @@ const PlaylistDetails = ({ playlist }) => {
         <div>{videos && (videos.map(video => { console.log(video)
           return <h3>{video.snippet.title}</h3>
         }))}</div>
-        {expended && <span className="convert-button" onClick={handleConvertPlaylist}>Convert To Spotify</span>}
+        {(expended && !completed) && <button className="convert-button" disabled={completed} onClick={handleConvertPlaylist}>Convert To Spotify</button>}
+        {(expended && completed) && <div className="complete">Converted!</div>}
         </div>
     )
   }

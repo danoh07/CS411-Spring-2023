@@ -8,6 +8,8 @@ export const playlistsReducer = (state, action) => {
       return { 
         playlists: action.payload 
       }
+    case 'DELETE_PLAYLIST':
+      return state
     default:
       return state
   }

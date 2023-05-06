@@ -4,6 +4,7 @@ const {
     search,
     createPlaylist,
     updatePlaylist,
+    deletePlaylist,
     logout } = require('../controllers/youtubeAPIController')
 const requireAuth = require('../middleware/requireAuth');
 
@@ -22,6 +23,8 @@ router.get('/search/:searchParam', search)
 router.post('/create/playlist', createPlaylist)
 
 router.post('/update/playlist', updatePlaylist)
+
+router.delete('/delete/playlist/:playlistId', deletePlaylist)
 
 router.get('/logout', logout)
 

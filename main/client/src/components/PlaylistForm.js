@@ -1,10 +1,26 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { usePlaylistContext } from '../hooks/usePlaylistContext'
 
 const PlaylistForm = () => {
   const { dispatch } = usePlaylistContext()
   const [selectedPlaylist, setSelectedPlaylist] = useState('')
-    
+  const [login, setLogin] = useState(false)
+  
+
+  useEffect(() => {
+    try {
+      const loginstate = localStorage.getItem('spotify_login')
+      if (loginstate) {
+        setLogin(true)
+      
+      }
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  }, [login])
+
   const getYoutube = () => {
     if (selectedPlaylist !== 'youtube') {
       console.log('Change playlist to youtube')
@@ -25,7 +41,9 @@ const PlaylistForm = () => {
   } 
 
   const handleClick = () => {
-    window.open('http://localhost:8888/api/spotify/getAuthUrl', "_self")
+    window.open('http://localhost:8888/api/spotify/getAuthUrl', '_self')
+    setLogin(true)
+    localStorage.setItem('spotify_login', 'logged in')
   }
 
   return (
@@ -36,18 +54,18 @@ const PlaylistForm = () => {
           <i class="fa-brands fa-youtube fa-xl"/>
           Get YouTube Playlist
       </button>
-      <button disabled={selectedPlaylist === 'spotify'} 
+      {login && <button disabled={selectedPlaylist === 'spotify'} 
         className='get-playlist-buttons' 
         onClick={getSpotify}>
           <i class="fa-brands fa-spotify fa-xl" />
           Get Spotify Playlist
-        </button>
-      <button disabled={selectedPlaylist === 'spotify' || selectedPlaylist === 'youtube'} 
+        </button>}
+      {!login && <button disabled={selectedPlaylist === 'spotify' || selectedPlaylist === 'youtube'} 
       className='get-playlist-buttons' 
       onClick={handleClick}>
         <i class="fa-brands fa-spotify fa-xl" />
         Login to spotify
-      </button>
+      </button>}
     </div>
   )
 }
